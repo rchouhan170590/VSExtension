@@ -1,6 +1,6 @@
 # VSExtension
 
-## ServerAddWpf.zip Server contains whole source code.
+## ServerAddWpf.zip  contains whole source code.
 
 ## Microsoft Visual Studio 2019 
 
