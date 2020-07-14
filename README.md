@@ -7,10 +7,10 @@
 
 #### Click On Tools
 #### Click On Connector
-![Extension Position](/Media/V2_start_window.png)
+![Extension Position](/Media/V2_start_window.jpg)
 
 #### View of Extension
-![View of Extension](/Media/V2_all_function.png)
+![View of Extension](/Media/V2_all_function.jpg)
 
 ### Whole View Structure :
 
