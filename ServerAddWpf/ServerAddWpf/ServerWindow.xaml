@@ -1,0 +1,128 @@
+﻿<Window x:Class="ServerAddWpf.ServerWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ServerAddWpf"
+             mc:Ignorable="d" 
+             MaxWidth="380"
+             MaxHeight="520"
+             
+             d:DesignHeight="520" d:DesignWidth="380" Width="380" WindowStartupLocation="Manual" ResizeMode="NoResize">
+    <Grid  >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="145*" />
+            <RowDefinition Height="297*" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="50*" />
+        </Grid.RowDefinitions>
+
+        <Grid  Grid.Row="0" Background="#595959"  >
+            <Label x:Name="info" Content="Enter Connecting String if want to add Database else Select File" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"  Width="360" Height="28" Foreground="White"/>
+
+            <Button x:Name="select_server_file_btn" Content="Server File" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top" Width="106"  Height="30" Click="select_server_file_btn_Click"/>
+            <TextBox x:Name="server_file_textbox" HorizontalAlignment="Left" Height="30" Margin="150,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="210"/>
+
+            <Label x:Name="serverDispalyNameLabel" Content="Display Name" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"  Width="106" Height="29" Foreground="White" />
+            <TextBox x:Name="serverDispalyNameText" HorizontalAlignment="Left" Height="29" Margin="150,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="210" />
+
+            <Button x:Name="add_server_toSettingsbtn" Content="Add Server" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="106" Height="30" Click="add_server_toSettingsbtn_Click"/>
+            <Button x:Name="add_database_toSettingsbtn" Content="Add Database" HorizontalAlignment="Left" Margin="255,100,0,0" VerticalAlignment="Top" Width="105" Height="30"  Click="add_database_toSettingsbtn_Click"/>
+
+        </Grid >
+
+        <Grid Grid.Row="1"  >
+            <!-- Grid.ColumnSpan="2"-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" >
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <ListBox x:Name="ServerListbox" Background="#a6a6a6" MouseDoubleClick="serverListBox_Item_Click" >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="Green" />
+                                </Trigger>
+                            </Style.Triggers>
+                           <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                           </Style.Resources>
+
+                           <Style.Setters>
+                               <EventSetter Event="Selected"  Handler="ServerListBoxItemSelected "/>
+                           </Style.Setters>
+
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                </Grid>
+
+                <Grid Grid.Row="1" Background="#a6a6a6">
+                    <Label x:Name="severfilePathLabel" Content="" />
+                </Grid>
+
+            </Grid>
+
+            <Grid  Grid.Column="1" >
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <ListBox x:Name="databaseListbox"  MouseDoubleClick="databaseListBox_Item_Click">
+                    <ListBox.ItemContainerStyle >
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True" >
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="Green" />
+                                </Trigger>
+                            </Style.Triggers>
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                            </Style.Resources>
+                                <Style.Setters>
+                                    <EventSetter Event="Selected"  Handler="dbListBoxItemSelected "/>
+                                </Style.Setters>
+                            </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                   <Label x:Name="connectingsStringLabel" Content="" Foreground="Black"/>
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="2" Background="#737373">
+            <Label x:Name="label" Content="Replace It" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="115" Margin="41,0,0,0" Foreground="White"/>
+            <TextBox x:Name="replaceTextbox" HorizontalAlignment="Left" Height="30" Margin="187,0,-0.4,0" TextWrapping="Wrap" Text="Enter"   VerticalAlignment="Top" Width="187"/>
+
+        </Grid>
+
+        <Grid  Grid.Row="3" Background="#595959" >
+            <Button x:Name="deleteBtn" Content="Delete Server" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="86" Height="32" Click="deletebtn_Click" />
+            <Button x:Name="okaybtn" Content="Select" HorizontalAlignment="Left" Margin="139,10,0,0" VerticalAlignment="Top" Width="90" Height="32" Click="okaybtn_Click" />
+            <Button x:Name="database_delete_btn" Content="Delete DB" HorizontalAlignment="Left" Margin="265,10,0,0" VerticalAlignment="Top" Width="85" Height="32" Click="database_delete_btn_Click" />
+        </Grid>
+
+
+
+    </Grid>
+</Window>
