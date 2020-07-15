@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ServerAddWpf
 { 
@@ -29,7 +30,7 @@ namespace ServerAddWpf
             InitializeComponent();
 
             const int snugContentWidth = 380;
-            const int snugContentHeight = 500;
+            const int snugContentHeight = 550;
 
             var horizontalBorderHeight = SystemParameters.ResizeFrameHorizontalBorderHeight;
             var verticalBorderWidth = SystemParameters.ResizeFrameVerticalBorderWidth;
@@ -43,6 +44,7 @@ namespace ServerAddWpf
         }
 
         public String ServerSelectedDisplayName = "";
+
         private void select_server_file_btn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -53,6 +55,18 @@ namespace ServerAddWpf
                 server_file_textbox.Text = fileDialog.FileName;
             }
 
+        }
+        
+        private void projectFolder_btn_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = folderDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                projectFolder_label.Content = folderDialog.SelectedPath;
+
+            }
         }
 
         private void add_server_toSettingsbtn_Click(object sender, RoutedEventArgs e)
@@ -99,6 +113,23 @@ namespace ServerAddWpf
 
         private void okaybtn_Click(object sender, RoutedEventArgs e)
         {
+            String folderPath = projectFolder_label.Content.ToString();
+            if (folderPath != null)
+            {
+                String ReplaceIt = replaceTextbox.Text;
+                String ReplaceBy = DatabaseStackPanal.selected_database_connecting_string(ServerListbox, databaseListbox);
+                //replace_word_in_file(CurrentWorkingFile, ReplaceIt, ReplaceBy);
+                List<string> file_list = find_all_xml_config_file_inDIR(projectFolder_label.Content.ToString());
+                replace_string_in_all_file(file_list, ReplaceIt, ReplaceBy);
+                MessageBox.Show("successfully Replace");
+            }
+            else
+            {
+                MessageBox.Show("Please First Select The Project Folder");
+            }
+            
+            return;
+            /*
             String CurrentWorkingFile = Properties.Settings.Default.activeFileName;
             if (!CurrentWorkingFile.Equals("-1"))
             {
@@ -113,7 +144,8 @@ namespace ServerAddWpf
                 MessageBox.Show("Sorry, No Active File Found. Please Open File ");
             }
             return;
-            
+            */
+
         }
 
         
@@ -154,9 +186,11 @@ namespace ServerAddWpf
         public void replace_word_in_file(String file_path,String replaceIt,String replaceBy)
         {
             string text = File.ReadAllText(file_path);
-            text = text.Replace(replaceIt, replaceBy);
-            File.WriteAllText(file_path, text);
-
+            //text = text.Replace(replaceIt, replaceBy);
+            //File.WriteAllText(file_path, text);
+            replaceIt = "\\b" + replaceIt + "\\b";
+            string result = Regex.Replace(text, @replaceIt, replaceBy);
+            File.WriteAllText(file_path, result);
             return;
         }
 
@@ -192,6 +226,29 @@ namespace ServerAddWpf
             return;
         }
 
+
+        public void replace_string_in_all_file(List<string> file_list, String replaceIt, String replaceBy)
+        {
+            foreach(string file in file_list)
+            {
+                string text = File.ReadAllText(file);
+                replaceIt = "\\b" + replaceIt + "\\b";
+                string result = Regex.Replace(text, @replaceIt, replaceBy);
+                File.WriteAllText(file, result);
+            }
+
+            return;
+        }
+        public List<string> find_all_xml_config_file_inDIR(String dirPath)
+        {
+            // String[] file_list = Directory.GetFiles(@dirPath);
+            List<string> serverFiles = Directory.GetFiles(dirPath, "*.*", SearchOption.AllDirectories)
+                .Where(file => new string[] { ".xml", ".config",}
+                .Contains(System.IO.Path.GetExtension(file))).ToList();
+
+            return serverFiles;
+
+        }
 
     }
 }
