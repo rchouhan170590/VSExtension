@@ -12,6 +12,10 @@
 #### View of Extension
 ![View of Extension](/Media/V2_all_function.jpg)
 
+
+Double Click on Selected Server, You will see the all the database within that server and the Path of selected Server at bottom.
+And Double Click on any Database you will see the connecting string In bottom.
+
 ### Whole View Structure :
 
 ##### 1
